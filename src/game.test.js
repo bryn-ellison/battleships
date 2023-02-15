@@ -101,4 +101,50 @@ describe("gameboardFactory", () => {
       })
     );
   });
+  test("receiveAttack function should hit correct coordinate on gameboard object and register miss if not on target", () => {
+    const testBoard = gameboardFactory();
+    testBoard.receiveAttack([0, 9]);
+    expect(testBoard.board).toEqual([
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, "M"],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
+  test("receiveAttack function should register hit on correct ship if on correct coordinate on gameboard array", () => {
+    const testBoard = gameboardFactory();
+    testBoard.placeShip([
+      [0, 0],
+      [0, 1],
+    ]);
+    testBoard.receiveAttack([0, 0]);
+    expect(testBoard.board).toEqual([
+      ["H", "D", 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
+  test("recieveAttack function should register hit on correct ship object if coords hit", () => {
+    const testBoard = gameboardFactory();
+    testBoard.placeShip([
+      [0, 0],
+      [0, 1],
+    ]);
+    testBoard.receiveAttack([0, 0]);
+    testBoard.receiveAttack([0, 1]);
+    expect(testBoard.ships[0].isSunk()).toEqual(true);
+  });
 });

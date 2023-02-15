@@ -1,16 +1,16 @@
 // create ships
 
 const shipFactory = (length) => {
-  let hits = 0;
+  let health = length;
+  const hit = () => {
+    health--;
+  };
   const isSunk = () => {
-    if (hits >= length) {
+    if (health === 0) {
       return true;
     } else {
       return false;
     }
-  };
-  const hit = () => {
-    hits++;
   };
 
   return { length, hit, isSunk };
@@ -52,8 +52,26 @@ const gameboardFactory = () => {
     ship.vesselType = type;
     ships.push(ship);
   };
-
-  return { board, placeShip, ships };
+  const receiveAttack = (coords) => {
+    if (board[coords[0]][coords[1]] === 0) {
+      board[coords[0]][coords[1]] = "M";
+    } else if (
+      board[coords[0]][coords[1]] === "D" ||
+      board[coords[0]][coords[1]] === "S" ||
+      board[coords[0]][coords[1]] === "C" ||
+      board[coords[0]][coords[1]] === "B" ||
+      board[coords[0]][coords[1]] === "A"
+    ) {
+      const shipTypeHit = board[coords[0]][coords[1]];
+      board[coords[0]][coords[1]] = "H";
+      ships.forEach((element) => {
+        if (element.vesselType === shipTypeHit) {
+          element.hit();
+        }
+      });
+    } else return false;
+  };
+  return { board, placeShip, ships, receiveAttack };
 };
 
 module.exports = { shipFactory, gameboardFactory };
