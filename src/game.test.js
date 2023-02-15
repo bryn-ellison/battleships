@@ -1,4 +1,4 @@
-const { shipFactory } = require("./game");
+const { shipFactory, gameboardFactory } = require("./game");
 
 describe("shipFactory", () => {
   test("returns ship object with correct properties", () => {
@@ -21,5 +21,84 @@ describe("shipFactory", () => {
     testShip.hit();
     testShip.hit();
     expect(testShip.isSunk()).toEqual(true);
+  });
+});
+
+describe("gameboardFactory", () => {
+  test("returns board object with correct properties", () => {
+    expect(gameboardFactory()).toEqual(
+      expect.objectContaining({
+        board: expect.any(Array),
+      })
+    );
+  });
+  test("exported board arrays should be correct format", () => {
+    expect(gameboardFactory().board).toEqual([
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
+  test("placeShip method should place a ship in first two places on board", () => {
+    const testBoard = gameboardFactory();
+    testBoard.placeShip([
+      [0, 0],
+      [0, 1],
+    ]);
+    expect(testBoard.board).toEqual([
+      ["D", "D", 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
+  test("placeShip method should place a length 4 ship in correct places on board", () => {
+    const testBoard = gameboardFactory();
+    testBoard.placeShip([
+      [3, 4],
+      [4, 4],
+      [5, 4],
+      [6, 4],
+    ]);
+    expect(testBoard.board).toEqual([
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "B", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "B", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "B", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "B", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
+  test("placeship should create correct ship object in ships array in gameboard object", () => {
+    const testBoard = gameboardFactory();
+    testBoard.placeShip([
+      [0, 0],
+      [0, 1],
+    ]);
+    expect(testBoard.ships[0]).toEqual(
+      expect.objectContaining({
+        length: 2,
+        hit: expect.any(Function),
+        isSunk: expect.any(Function),
+        vesselType: "D",
+      })
+    );
   });
 });
