@@ -65,6 +65,31 @@ describe("gameboardFactory", () => {
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     ]);
   });
+  test("placeShip method should place 2 length 3 ships in correct places on board", () => {
+    const testBoard = gameboardFactory();
+    testBoard.placeShip([
+      [0, 0],
+      [0, 1],
+      [0, 2],
+    ]);
+    testBoard.placeShip([
+      [3, 4],
+      [4, 4],
+      [5, 4],
+    ]);
+    expect(testBoard.board).toEqual([
+      ["S", "S", "S", 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "C", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "C", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, "C", 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
   test("placeShip method should place a length 4 ship in correct places on board", () => {
     const testBoard = gameboardFactory();
     testBoard.placeShip([

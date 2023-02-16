@@ -28,7 +28,9 @@ const gameboardFactory = () => {
   }
   const board = createBoard();
   const ships = [];
+  let livesLeft = 17;
   let type;
+  let subBuilt = false;
   const placeShip = (coords) => {
     const length = coords.length;
     switch (length) {
@@ -36,7 +38,12 @@ const gameboardFactory = () => {
         type = "D";
         break;
       case 3:
-        type = "S";
+        if (subBuilt === false) {
+          type = "S";
+          subBuilt = true;
+        } else {
+          type = "C";
+        }
         break;
       case 4:
         type = "B";
@@ -64,12 +71,19 @@ const gameboardFactory = () => {
     ) {
       const shipTypeHit = board[coords[0]][coords[1]];
       board[coords[0]][coords[1]] = "H";
+      livesLeft--;
       ships.forEach((element) => {
         if (element.vesselType === shipTypeHit) {
           element.hit();
         }
       });
+      checkGameOver();
     } else return false;
+  };
+  const checkGameOver = () => {
+    if (livesLeft === 0) {
+      console.log("GAME OVER!");
+    }
   };
   return { board, placeShip, ships, receiveAttack };
 };
