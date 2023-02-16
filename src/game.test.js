@@ -1,5 +1,9 @@
 const { shipFactory, gameboardFactory, playerFactory } = require("./game");
 
+const mockMath = Object.create(global.Math);
+mockMath.random = () => 0.5;
+global.Math = mockMath;
+
 describe("shipFactory", () => {
   test("returns ship object with correct properties", () => {
     expect(shipFactory(3)).toEqual(
@@ -219,5 +223,10 @@ describe("playerFactory function", () => {
     player1.takeTurn(computer, [0, 0]);
     player1.takeTurn(computer, [0, 1]);
     expect(computer.playerBoard.ships[0].isSunk()).toEqual(true);
+  });
+  test("getcoords function should return a random pair of coordinates", () => {
+    const player1 = playerFactory("Bryn");
+    const computer = playerFactory("computer");
+    expect(computer.getCoords(player1)).toEqual([5, 5]);
   });
 });

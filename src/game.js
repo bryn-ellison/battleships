@@ -1,3 +1,5 @@
+//const { computer } = require("./computer-player");
+
 // create ships
 
 const shipFactory = (length) => {
@@ -88,12 +90,23 @@ const gameboardFactory = () => {
   return { board, placeShip, ships, receiveAttack };
 };
 
+// create players
+
 const playerFactory = (name) => {
   const playerBoard = gameboardFactory();
   const takeTurn = (enemy, coords) => {
     enemy.playerBoard.receiveAttack(coords);
   };
-  return { name, playerBoard, takeTurn };
+  const getCoords = (enemy) => {
+    const y = Math.floor(Math.random() * 10);
+    const x = Math.floor(Math.random() * 10);
+    if (enemy.playerBoard.board[y][x] === 0) {
+      return [y, x];
+    } else {
+      getCoords(enemy);
+    }
+  };
+  return { name, playerBoard, takeTurn, getCoords };
 };
 
 module.exports = { shipFactory, gameboardFactory, playerFactory };
