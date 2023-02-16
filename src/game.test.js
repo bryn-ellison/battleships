@@ -1,4 +1,4 @@
-const { shipFactory, gameboardFactory } = require("./game");
+const { shipFactory, gameboardFactory, playerFactory } = require("./game");
 
 describe("shipFactory", () => {
   test("returns ship object with correct properties", () => {
@@ -171,5 +171,53 @@ describe("gameboardFactory", () => {
     testBoard.receiveAttack([0, 0]);
     testBoard.receiveAttack([0, 1]);
     expect(testBoard.ships[0].isSunk()).toEqual(true);
+  });
+});
+
+describe("playerFactory function", () => {
+  test("should return player object with correct properties", () => {
+    expect(playerFactory("Bryn")).toEqual(
+      expect.objectContaining({
+        name: expect.any(String),
+        playerBoard: expect.any(Object),
+        takeTurn: expect.any(Function),
+      })
+    );
+  });
+  test("should return valid playerboard object when created", () => {
+    const player1 = playerFactory("Bryn");
+    expect(player1.playerBoard.board).toEqual([
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ]);
+  });
+  test("should attack other player using takeTurn method", () => {
+    const player1 = playerFactory("Bryn");
+    const computer = playerFactory("computer");
+    computer.playerBoard.placeShip([
+      [0, 0],
+      [0, 1],
+    ]);
+    player1.takeTurn(computer, [0, 0]);
+    expect(computer.playerBoard.board[0][0]).toEqual("H");
+  });
+  test("should sink enemy ship with correct amount of hits using takeTurn method", () => {
+    const player1 = playerFactory("Bryn");
+    const computer = playerFactory("computer");
+    computer.playerBoard.placeShip([
+      [0, 0],
+      [0, 1],
+    ]);
+    player1.takeTurn(computer, [0, 0]);
+    player1.takeTurn(computer, [0, 1]);
+    expect(computer.playerBoard.ships[0].isSunk()).toEqual(true);
   });
 });

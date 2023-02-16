@@ -88,4 +88,12 @@ const gameboardFactory = () => {
   return { board, placeShip, ships, receiveAttack };
 };
 
-module.exports = { shipFactory, gameboardFactory };
+const playerFactory = (name) => {
+  const playerBoard = gameboardFactory();
+  const takeTurn = (enemy, coords) => {
+    enemy.playerBoard.receiveAttack(coords);
+  };
+  return { name, playerBoard, takeTurn };
+};
+
+module.exports = { shipFactory, gameboardFactory, playerFactory };
