@@ -1,5 +1,3 @@
-//const { computer } = require("./computer-player");
-
 // create ships
 
 const shipFactory = (length) => {

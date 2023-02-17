@@ -1,8 +1,16 @@
 const { shipFactory, gameboardFactory, playerFactory } = require("./game");
 
-const mockMath = Object.create(global.Math);
-mockMath.random = () => 0.5;
-global.Math = mockMath;
+// use mock return for random number generators in tests
+
+beforeEach(() => {
+  jest.spyOn(global.Math, "random").mockReturnValue(0.123456789);
+});
+
+afterEach(() => {
+  jest.spyOn(global.Math, "random").mockRestore();
+});
+
+//
 
 describe("shipFactory", () => {
   test("returns ship object with correct properties", () => {
@@ -227,6 +235,6 @@ describe("playerFactory function", () => {
   test("getcoords function should return a random pair of coordinates", () => {
     const player1 = playerFactory("Bryn");
     const computer = playerFactory("computer");
-    expect(computer.getCoords(player1)).toEqual([5, 5]);
+    expect(computer.getCoords(player1)).toEqual([1, 1]);
   });
 });

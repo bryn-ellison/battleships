@@ -1,0 +1,29 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#main {
+    border: 1px solid black;
+    width: 620px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.board-container {
+    border: 1px solid blue;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    height: 600px
+}
+
+.grid-square {
+    border: 1px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
