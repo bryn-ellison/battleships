@@ -46,7 +46,6 @@ function gameLoop() {
   } else {
     computer.takeTurn(player1, computer.getCoords(player1));
     displayBoard(player1);
-    // call display function to deal with hit result
     turn = player1;
     gameLoop();
   }
@@ -54,7 +53,6 @@ function gameLoop() {
 
 function playerTurn(coords) {
   player1.takeTurn(computer, coords);
-  // call display function to deal with hit result
   displayBoard(computer);
   gameLoop();
 }

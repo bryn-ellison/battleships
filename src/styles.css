@@ -45,3 +45,11 @@ body {
     align-items: center;
     background-color: red;
   }
+
+  .miss-square {
+    border: 1px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkblue;
+  }

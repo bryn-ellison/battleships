@@ -6,7 +6,6 @@ main.id = "main";
 body.appendChild(main);
 
 function displayBoard(boardObj) {
-  console.log(boardObj.playerBoard.board);
   let firstRun = false;
   if (document.getElementById(`${boardObj.name}-gameboard`) === null) {
     firstRun = true;
@@ -20,6 +19,7 @@ function displayBoard(boardObj) {
       const gridSquare = document.createElement("div");
       gridSquare.classList = "grid-square";
       if (elementX === "H") gridSquare.classList = "hit-square";
+      if (elementX === "M") gridSquare.classList = "miss-square";
       gridSquare.id = `${indexY}, ${indexX}`;
       if (boardObj.name === "computer") {
         gridSquare.addEventListener("click", () => {

@@ -2,18 +2,18 @@
 
 const shipFactory = (length) => {
   let health = length;
-  const hit = () => {
-    health--;
-  };
-  const isSunk = () => {
-    if (health === 0) {
+  function hit() {
+    this.health--;
+  }
+  function isSunk() {
+    if (this.health === 0) {
       return true;
     } else {
       return false;
     }
-  };
+  }
 
-  return { length, hit, isSunk };
+  return { health, hit, isSunk, length };
 };
 
 // create gameboards
@@ -31,7 +31,7 @@ const gameboardFactory = () => {
   let livesLeft = 17;
   let type;
   let subBuilt = false;
-  const placeShip = (coords) => {
+  function placeShip(coords) {
     const length = coords.length;
     switch (length) {
       case 2:
@@ -53,58 +53,62 @@ const gameboardFactory = () => {
         break;
     }
     coords.forEach((element) => {
-      board[element[0]][element[1]] = type;
+      this.board[element[0]][element[1]] = type;
     });
     const ship = shipFactory(length);
     ship.vesselType = type;
     ships.push(ship);
-  };
-  const receiveAttack = (coords) => {
-    if (board[coords[0]][coords[1]] === 0) {
-      board[coords[0]][coords[1]] = "M";
+  }
+  function receiveAttack(coords) {
+    if (this.board[coords[0]][coords[1]] === 0) {
+      this.board[coords[0]][coords[1]] = "M";
     } else if (
-      board[coords[0]][coords[1]] === "D" ||
-      board[coords[0]][coords[1]] === "S" ||
-      board[coords[0]][coords[1]] === "C" ||
-      board[coords[0]][coords[1]] === "B" ||
-      board[coords[0]][coords[1]] === "A"
+      this.board[coords[0]][coords[1]] === "D" ||
+      this.board[coords[0]][coords[1]] === "S" ||
+      this.board[coords[0]][coords[1]] === "C" ||
+      this.board[coords[0]][coords[1]] === "B" ||
+      this.board[coords[0]][coords[1]] === "A"
     ) {
-      const shipTypeHit = board[coords[0]][coords[1]];
-      board[coords[0]][coords[1]] = "H";
+      const shipTypeHit = this.board[coords[0]][coords[1]];
+      this.board[coords[0]][coords[1]] = "H";
+      // console.log(board[coords[0]][coords[1]] + " THIS");
+      // console.log(board);
       livesLeft--;
-      ships.forEach((element) => {
+      this.ships.forEach((element) => {
         if (element.vesselType === shipTypeHit) {
           element.hit();
         }
       });
       checkGameOver();
     } else return false;
-  };
-  const checkGameOver = () => {
+  }
+  function checkGameOver() {
     if (livesLeft === 0) {
       console.log("GAME OVER!");
     }
-  };
-  return { board, placeShip, ships, receiveAttack };
+  }
+  return { board, placeShip, ships, receiveAttack, checkGameOver };
 };
 
 // create players
 
 const playerFactory = (name) => {
   const playerBoard = gameboardFactory();
-  const takeTurn = (enemy, coords) => {
+  function takeTurn(enemy, coords) {
     enemy.playerBoard.receiveAttack(coords);
-    console.log("attack at " + enemy.name + " " + coords);
-  };
-  const getCoords = (enemy) => {
+  }
+  function getCoords(enemy) {
     const y = Math.floor(Math.random() * 10);
     const x = Math.floor(Math.random() * 10);
-    if (enemy.playerBoard.board[y][x] === 0) {
-      return [y, x];
+    if (
+      enemy.playerBoard.board[y][x] === "M" ||
+      enemy.playerBoard.board[y][x] === "H"
+    ) {
+      return getCoords(enemy);
     } else {
-      getCoords(enemy);
+      return [y, x];
     }
-  };
+  }
   return { name, playerBoard, takeTurn, getCoords };
 };
 
