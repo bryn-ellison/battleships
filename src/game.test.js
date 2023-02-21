@@ -1,4 +1,4 @@
-const { shipFactory, gameboardFactory, playerFactory } = require("./game");
+import { shipFactory, gameboardFactory, playerFactory } from "./game.js";
 
 // use mock return for random number generators in tests
 

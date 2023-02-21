@@ -94,6 +94,7 @@ const playerFactory = (name) => {
   const playerBoard = gameboardFactory();
   const takeTurn = (enemy, coords) => {
     enemy.playerBoard.receiveAttack(coords);
+    console.log("attack at " + enemy.name + " " + coords);
   };
   const getCoords = (enemy) => {
     const y = Math.floor(Math.random() * 10);
@@ -107,4 +108,4 @@ const playerFactory = (name) => {
   return { name, playerBoard, takeTurn, getCoords };
 };
 
-module.exports = { shipFactory, gameboardFactory, playerFactory };
+export { shipFactory, gameboardFactory, playerFactory };

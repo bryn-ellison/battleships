@@ -4,26 +4,44 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
-}
-
-#main {
+  }
+  
+  #main {
     border: 1px solid black;
-    width: 620px;
+    width: 640px;
     display: flex;
     flex-direction: column;
     padding: 10px;
-}
-
-.board-container {
-    border: 1px solid blue;
+  }
+  
+  .board-container {
+    border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    height: 600px
-}
-
-.grid-square {
-    border: 1px solid red;
+    height: 600px;
+    margin: 10px;
+  }
+  
+  .grid-square {
+    border: 1px solid blue;
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    background-color: aqua;
+  }
+  
+  .ship-square {
+    border: 1px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+  }
+
+  .hit-square {
+    border: 1px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+  }
