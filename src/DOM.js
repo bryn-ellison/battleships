@@ -10,6 +10,9 @@ function displayBoard(boardObj) {
   if (document.getElementById(`${boardObj.name}-gameboard`) === null) {
     firstRun = true;
   }
+  const playerContainer = document.createElement("div");
+  playerContainer.id = `${boardObj.name}-player-container`;
+  playerContainer.classList = "player-container";
   const boardContainer = document.createElement("div");
   boardContainer.classList = "board-container";
   boardContainer.id = `${boardObj.name}-gameboard`;
@@ -21,7 +24,7 @@ function displayBoard(boardObj) {
       if (elementX === "H") gridSquare.classList = "hit-square";
       if (elementX === "M") gridSquare.classList = "miss-square";
       gridSquare.id = `${indexY}, ${indexX}`;
-      if (boardObj.name === "computer") {
+      if (boardObj.name === "Computer") {
         gridSquare.addEventListener("click", () => {
           if (elementX === "M" || elementX === "H") return null;
           playerTurn([indexY, indexX]);
@@ -42,11 +45,33 @@ function displayBoard(boardObj) {
       boardContainer.appendChild(gridSquare);
     });
   });
+
   if (firstRun) {
-    main.appendChild(boardContainer);
+    playerContainer.appendChild(boardContainer);
   } else {
     const oldChild = document.getElementById(`${boardObj.name}-gameboard`);
-    main.replaceChild(boardContainer, oldChild);
+    oldChild.replaceWith(boardContainer);
+  }
+  main.appendChild(playerContainer);
+  displayConsole(boardObj, firstRun);
+}
+
+function displayConsole(boardObj, firstRun) {
+  const playerContainer = document.getElementById(
+    `${boardObj.name}-player-container`
+  );
+  const consoleContainer = document.createElement("div");
+  consoleContainer.id = `${boardObj.name}-console`;
+  consoleContainer.classList = "player-console";
+  const boardName = document.createElement("h3");
+  boardName.classList = "board-names";
+  boardName.textContent = `${boardObj.name}'s waters`;
+  consoleContainer.appendChild(boardName);
+  if (firstRun) {
+    playerContainer.appendChild(consoleContainer);
+  } else {
+    const oldChild = document.getElementById(`${boardObj.name}-console`);
+    oldChild.replaceWith(consoleContainer);
   }
 }
 
@@ -62,9 +87,10 @@ function displayGameOver(winner) {
   winnerMessage.textContent = `${winner} wins!!!`;
   const restartBtn = document.createElement("button");
   restartBtn.id = "restart-btn";
-  restartBtn.textContent = "play again";
+  restartBtn.textContent = "Play again";
   restartBtn.addEventListener("click", () => {
     setupGame(player1, computer);
+    main.removeChild(gameOverContainer);
   });
   gameOverContainer.appendChild(gameOverText);
   gameOverContainer.appendChild(winnerMessage);

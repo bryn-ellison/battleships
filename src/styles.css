@@ -4,6 +4,7 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
   }
   
   #main {
@@ -55,7 +56,15 @@ body {
   }
 
   #game-over-container {
+    height: 300px;
+    width: 300px;
     border: 1px solid black;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background-color: white;
+    padding: 1rem;
+    text-align: center;
   }
 
   #game-over-text {
@@ -63,9 +72,22 @@ body {
   }
 
   #winner-message {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
 
   #restart-btn {
     border: none;
+    padding: 2rem;
+    font-size: 1.2rem;
+    background-color: darkblue;
+    color: white;
+    border-radius: .2rem;
+  }
+
+  .player-console {
+    border: 1px solid black;
+  }
+
+  .board-names {
+    text-align: center;
   }

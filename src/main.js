@@ -5,7 +5,7 @@ import "./styles.css";
 // build player boards
 
 const player1 = playerFactory("Bryn");
-const computer = playerFactory("computer");
+const computer = playerFactory("Computer");
 
 function setupGame(player1, computer) {
   player1.playerBoard.board = [
