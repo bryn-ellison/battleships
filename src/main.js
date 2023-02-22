@@ -1,5 +1,5 @@
 import { shipFactory, gameboardFactory, playerFactory } from "./game.js";
-import { displayBoard } from "./DOM.js";
+import { displayBoard, displayGameOver } from "./DOM.js";
 import "./styles.css";
 
 // build player boards
@@ -7,36 +7,38 @@ import "./styles.css";
 const player1 = playerFactory("Bryn");
 const computer = playerFactory("computer");
 
-player1.playerBoard.board = [
-  ["D", "D", 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, "C", "C", "C", 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, "B", "B", "B", "B", 0],
-];
+function setupGame(player1, computer) {
+  player1.playerBoard.board = [
+    ["D", "D", 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, "C", "C", "C", 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, "B", "B", "B", "B", 0],
+  ];
 
-computer.playerBoard.board = [
-  ["D", "D", 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, "C", "C", "C", 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, "B", "B", "B", "B", 0],
-];
+  computer.playerBoard.board = [
+    ["D", "D", 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, "S", 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, "A"],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, "C", "C", "C", 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, "B", "B", "B", "B", 0],
+  ];
 
-// display boards
+  // display boards
 
-displayBoard(player1);
-displayBoard(computer);
+  displayBoard(player1);
+  displayBoard(computer);
+}
 
 let turn = player1;
 
@@ -57,6 +59,11 @@ function playerTurn(coords) {
   gameLoop();
 }
 
+function gameEnd(attacker) {
+  displayGameOver(attacker);
+}
+
+setupGame(player1, computer);
 gameLoop();
 
-export { playerTurn };
+export { playerTurn, gameEnd, setupGame, player1, computer };

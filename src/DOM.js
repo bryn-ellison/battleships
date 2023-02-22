@@ -1,4 +1,4 @@
-import { player1, computer, playerTurn } from "../src/main.js";
+import { player1, computer, playerTurn, setupGame } from "../src/main.js";
 
 const body = document.querySelector("body");
 const main = document.createElement("div");
@@ -23,6 +23,7 @@ function displayBoard(boardObj) {
       gridSquare.id = `${indexY}, ${indexX}`;
       if (boardObj.name === "computer") {
         gridSquare.addEventListener("click", () => {
+          if (elementX === "M" || elementX === "H") return null;
           playerTurn([indexY, indexX]);
         });
       } else {
@@ -49,6 +50,26 @@ function displayBoard(boardObj) {
   }
 }
 
-// display hit or miss function
+function displayGameOver(winner) {
+  console.log(winner);
+  const gameOverContainer = document.createElement("div");
+  gameOverContainer.id = "game-over-container";
+  const gameOverText = document.createElement("h3");
+  gameOverText.id = "game-over-text";
+  gameOverText.textContent = "GAME OVER";
+  const winnerMessage = document.createElement("p");
+  winnerMessage.id = "winner-message";
+  winnerMessage.textContent = `${winner} wins!!!`;
+  const restartBtn = document.createElement("button");
+  restartBtn.id = "restart-btn";
+  restartBtn.textContent = "play again";
+  restartBtn.addEventListener("click", () => {
+    setupGame(player1, computer);
+  });
+  gameOverContainer.appendChild(gameOverText);
+  gameOverContainer.appendChild(winnerMessage);
+  gameOverContainer.appendChild(restartBtn);
+  main.appendChild(gameOverContainer);
+}
 
-export { displayBoard };
+export { displayBoard, displayGameOver };

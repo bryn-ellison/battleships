@@ -53,3 +53,19 @@ body {
     align-items: center;
     background-color: darkblue;
   }
+
+  #game-over-container {
+    border: 1px solid black;
+  }
+
+  #game-over-text {
+    font-size: 3rem;
+  }
+
+  #winner-message {
+    font-size: 1.1rem;
+  }
+
+  #restart-btn {
+    border: none;
+  }

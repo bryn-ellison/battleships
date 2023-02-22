@@ -1,3 +1,5 @@
+import { gameEnd } from "./main";
+
 // create ships
 
 const shipFactory = (length) => {
@@ -59,7 +61,7 @@ const gameboardFactory = () => {
     ship.vesselType = type;
     ships.push(ship);
   }
-  function receiveAttack(coords) {
+  function receiveAttack(coords, attacker) {
     if (this.board[coords[0]][coords[1]] === 0) {
       this.board[coords[0]][coords[1]] = "M";
     } else if (
@@ -71,20 +73,18 @@ const gameboardFactory = () => {
     ) {
       const shipTypeHit = this.board[coords[0]][coords[1]];
       this.board[coords[0]][coords[1]] = "H";
-      // console.log(board[coords[0]][coords[1]] + " THIS");
-      // console.log(board);
       livesLeft--;
       this.ships.forEach((element) => {
         if (element.vesselType === shipTypeHit) {
           element.hit();
         }
       });
-      checkGameOver();
+      checkGameOver(attacker);
     } else return false;
   }
-  function checkGameOver() {
+  function checkGameOver(attacker) {
     if (livesLeft === 0) {
-      console.log("GAME OVER!");
+      gameEnd(attacker);
     }
   }
   return { board, placeShip, ships, receiveAttack, checkGameOver };
@@ -95,7 +95,7 @@ const gameboardFactory = () => {
 const playerFactory = (name) => {
   const playerBoard = gameboardFactory();
   function takeTurn(enemy, coords) {
-    enemy.playerBoard.receiveAttack(coords);
+    enemy.playerBoard.receiveAttack(coords, this.name);
   }
   function getCoords(enemy) {
     const y = Math.floor(Math.random() * 10);
