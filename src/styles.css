@@ -13,26 +13,77 @@ body {
     display: flex;
     flex-direction: column;
     padding: 10px;
+    height: 100%;
+    align-items: center;
+  }
+
+  #game-console-container {
+    display: flex;
+    flex-direction: column;
+    border: 3px solid black;
+    align-items: center;
+    padding: 1rem;
+  }
+
+  #title {
+    text-align: center;
+  }
+
+  #status-area {
+    border: 1px solid black;
+    margin: .4rem;
+    padding: .8rem;
+    width: 400px;
+    text-align: center;
+  }
+
+  #status-text {
+    font-size: 1.3rem;
+  }
+
+  #start-game-btn {
+    border: none;
+    width: 170px;
+    font-size: 1.2rem;
+    padding: .6rem;
   }
   
+  .player-container {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    align-items: center;
+  }
+
   .board-container {
     border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    height: 600px;
+    width: 500px;
+    height: 500px;
     margin: 10px;
+    cursor: crosshair;
   }
   
-  .grid-square {
+  .grid-square, .computer-grid-square { 
     border: 1px solid blue;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: aqua;
-  }
+    
+   }
   
   .ship-square {
     border: 1px solid blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: grey;
+  }
+
+  .selection-square {
+    border: 2px solid red;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,6 +137,8 @@ body {
 
   .player-console {
     border: 1px solid black;
+    width: 400px;
+    padding: .5rem;
   }
 
   .board-names {

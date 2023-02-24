@@ -1,4 +1,5 @@
 import { gameEnd } from "./main";
+import { updateConsoleStatus } from "./DOM";
 
 // create ships
 
@@ -73,6 +74,7 @@ const gameboardFactory = () => {
     ) {
       const shipTypeHit = this.board[coords[0]][coords[1]];
       this.board[coords[0]][coords[1]] = "H";
+      updateConsoleStatus("BOOM! It's a hit!");
       livesLeft--;
       this.ships.forEach((element) => {
         if (element.vesselType === shipTypeHit) {

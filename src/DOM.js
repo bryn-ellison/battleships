@@ -1,4 +1,11 @@
-import { player1, computer, playerTurn, setupGame } from "../src/main.js";
+import {
+  player1,
+  computer,
+  playerTurn,
+  setupGame,
+  setupPlayer,
+  placePlayerShip,
+} from "../src/main.js";
 
 const body = document.querySelector("body");
 const main = document.createElement("div");
@@ -21,10 +28,9 @@ function displayBoard(boardObj) {
     elementY.forEach((elementX, indexX) => {
       const gridSquare = document.createElement("div");
       gridSquare.classList = "grid-square";
-      if (elementX === "H") gridSquare.classList = "hit-square";
-      if (elementX === "M") gridSquare.classList = "miss-square";
       gridSquare.id = `${indexY}, ${indexX}`;
       if (boardObj.name === "Computer") {
+        gridSquare.classList = "computer-grid-square";
         gridSquare.addEventListener("click", () => {
           if (elementX === "M" || elementX === "H") return null;
           playerTurn([indexY, indexX]);
@@ -38,10 +44,9 @@ function displayBoard(boardObj) {
           elementX === "A"
         )
           gridSquare.classList = "ship-square";
-
-        gridSquare.textContent = elementX;
       }
-
+      if (elementX === "H") gridSquare.classList = "hit-square";
+      if (elementX === "M") gridSquare.classList = "miss-square";
       boardContainer.appendChild(gridSquare);
     });
   });
@@ -89,7 +94,7 @@ function displayGameOver(winner) {
   restartBtn.id = "restart-btn";
   restartBtn.textContent = "Play again";
   restartBtn.addEventListener("click", () => {
-    setupGame(player1, computer);
+    // add new restart game function
     main.removeChild(gameOverContainer);
   });
   gameOverContainer.appendChild(gameOverText);
@@ -98,4 +103,76 @@ function displayGameOver(winner) {
   main.appendChild(gameOverContainer);
 }
 
-export { displayBoard, displayGameOver };
+function placePlayerShips(shipName, shipLength) {
+  const playerGridSquares = document.querySelectorAll(".grid-square");
+
+  playerGridSquares.forEach((element, index) => {
+    element.addEventListener("mouseover", (e) => {
+      for (let i = 0; i < shipLength; i++) {
+        const xCoord = Number(e.target.id.split(",")[1]) + i;
+        const yCoord = Number(e.target.id.split(",")[0]);
+        const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
+        const currentSquare = document.getElementById(coord);
+        currentSquare.classList = "selection-square";
+      }
+    });
+    element.addEventListener("mouseout", (e) => {
+      for (let i = 0; i < shipLength; i++) {
+        const xCoord = Number(e.target.id.split(",")[1]) + i;
+        const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
+        const currentSquare = document.getElementById(coord);
+        currentSquare.classList = "grid-square";
+      }
+    });
+    element.addEventListener("click", (e) => {
+      let placeCoords = [];
+      for (let i = 0; i < shipLength; i++) {
+        const xCoord = Number(e.target.id.split(",")[1]) + i;
+        const yCoord = Number(e.target.id.split(",")[0]);
+        const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
+        const currentSquare = document.getElementById(coord);
+        placeCoords.push([yCoord, xCoord]);
+      }
+
+      placePlayerShip(placeCoords);
+    });
+  });
+}
+
+function displayGameConsole() {
+  const gameConsoleContainer = document.createElement("div");
+  gameConsoleContainer.id = "game-console-container";
+  const title = document.createElement("h1");
+  title.id = "title";
+  title.textContent = "BATTLESHIPS";
+  const statusArea = document.createElement("div");
+  statusArea.id = "status-area";
+  const status = document.createElement("p");
+  status.id = "status-text";
+  status.textContent = "Welcome to Battleships!";
+  const startGameBtn = document.createElement("button");
+  startGameBtn.id = "start-game-btn";
+  startGameBtn.textContent = "Start game";
+  startGameBtn.addEventListener("click", () => {
+    setupPlayer();
+    startGameBtn.style.display = "none";
+  });
+  gameConsoleContainer.appendChild(title);
+  statusArea.appendChild(status);
+  gameConsoleContainer.appendChild(statusArea);
+  gameConsoleContainer.appendChild(startGameBtn);
+  main.appendChild(gameConsoleContainer);
+}
+
+function updateConsoleStatus(statusMessage) {
+  const status = document.getElementById("status-text");
+  status.textContent = `${statusMessage}`;
+}
+
+export {
+  displayBoard,
+  displayGameOver,
+  placePlayerShips,
+  displayGameConsole,
+  updateConsoleStatus,
+};
