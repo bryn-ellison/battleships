@@ -81,7 +81,6 @@ function displayConsole(boardObj, firstRun) {
 }
 
 function displayGameOver(winner) {
-  console.log(winner);
   const gameOverContainer = document.createElement("div");
   gameOverContainer.id = "game-over-container";
   const gameOverText = document.createElement("h3");
@@ -104,36 +103,87 @@ function displayGameOver(winner) {
 }
 
 function placePlayerShips(shipName, shipLength) {
-  const playerGridSquares = document.querySelectorAll(".grid-square");
+  let isVertical = false;
+  const emptyGridSquares = document.querySelectorAll(".grid-square");
+  const shipGridSquares = document.querySelectorAll(".ship-square");
+  const btnContainer = document.querySelector("#btn-container");
+  const rotateBtn = document.createElement("button");
+  rotateBtn.classList = "console-btn";
+  rotateBtn.textContent = "Rotate ship";
+  rotateBtn.addEventListener("click", () => {
+    if (isVertical) {
+      isVertical = false;
+    } else {
+      isVertical = true;
+    }
+  });
+  btnContainer.appendChild(rotateBtn);
 
-  playerGridSquares.forEach((element, index) => {
+  function getCoordX(e, i) {
+    const xCoord = Number(e.target.id.split(",")[1]) + i;
+    const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
+    const currentSquare = document.getElementById(coord);
+    return currentSquare;
+  }
+
+  function getCoordY(e, i) {
+    const yCoord = Number(e.target.id.split(",")[0]) + i;
+    const coord = `${yCoord.toString()},${e.target.id.split(",")[1]}`;
+    const currentSquare = document.getElementById(coord);
+    return currentSquare;
+  }
+
+  emptyGridSquares.forEach((element, index) => {
     element.addEventListener("mouseover", (e) => {
       for (let i = 0; i < shipLength; i++) {
-        const xCoord = Number(e.target.id.split(",")[1]) + i;
-        const yCoord = Number(e.target.id.split(",")[0]);
-        const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
-        const currentSquare = document.getElementById(coord);
-        currentSquare.classList = "selection-square";
+        let currentSquare;
+        if (isVertical) {
+          currentSquare = getCoordY(e, i);
+        } else {
+          currentSquare = getCoordX(e, i);
+        }
+        currentSquare.classList = "ship-square";
       }
     });
     element.addEventListener("mouseout", (e) => {
       for (let i = 0; i < shipLength; i++) {
-        const xCoord = Number(e.target.id.split(",")[1]) + i;
-        const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
-        const currentSquare = document.getElementById(coord);
-        currentSquare.classList = "grid-square";
+        let currentSquare;
+        if (isVertical) {
+          currentSquare = getCoordY(e, i);
+        } else {
+          currentSquare = getCoordX(e, i);
+        }
+        currentSquare.classList = "ship-square";
+        let isShipSquare = false;
+        shipGridSquares.forEach((element) => {
+          if (element === currentSquare) {
+            isShipSquare = true;
+          }
+        });
+        if (isShipSquare === false) currentSquare.classList = "grid-square";
       }
     });
     element.addEventListener("click", (e) => {
       let placeCoords = [];
+      let isShipSquare = false;
       for (let i = 0; i < shipLength; i++) {
-        const xCoord = Number(e.target.id.split(",")[1]) + i;
-        const yCoord = Number(e.target.id.split(",")[0]);
-        const coord = `${e.target.id.split(",")[0]}, ${xCoord.toString()}`;
-        const currentSquare = document.getElementById(coord);
-        placeCoords.push([yCoord, xCoord]);
+        let currentSquare;
+        if (isVertical) {
+          currentSquare = getCoordY(e, i);
+        } else {
+          currentSquare = getCoordX(e, i);
+        }
+        const coords = currentSquare.id;
+        placeCoords.push([coords[0], coords[3]]);
+        currentSquare.classList = "ship-square";
+        shipGridSquares.forEach((element) => {
+          if (element === currentSquare) {
+            isShipSquare = true;
+          }
+        });
       }
-
+      if (isShipSquare) return;
+      btnContainer.removeChild(rotateBtn);
       placePlayerShip(placeCoords);
     });
   });
@@ -150,8 +200,10 @@ function displayGameConsole() {
   const status = document.createElement("p");
   status.id = "status-text";
   status.textContent = "Welcome to Battleships!";
+  const btnContainer = document.createElement("div");
+  btnContainer.id = "btn-container";
   const startGameBtn = document.createElement("button");
-  startGameBtn.id = "start-game-btn";
+  startGameBtn.classList = "console-btn";
   startGameBtn.textContent = "Start game";
   startGameBtn.addEventListener("click", () => {
     setupPlayer();
@@ -160,7 +212,8 @@ function displayGameConsole() {
   gameConsoleContainer.appendChild(title);
   statusArea.appendChild(status);
   gameConsoleContainer.appendChild(statusArea);
-  gameConsoleContainer.appendChild(startGameBtn);
+  btnContainer.appendChild(startGameBtn);
+  gameConsoleContainer.appendChild(btnContainer);
   main.appendChild(gameConsoleContainer);
 }
 

@@ -60,14 +60,19 @@ function computerSetup() {
 
 function gameLoop() {
   if (turn === player1) {
-    updateConsoleStatus(`${player1.name} take your shot...`);
+    setTimeout(() => {
+      updateConsoleStatus(`${player1.name} take your shot...`);
+    }, 500);
+
     turn = computer;
   } else {
-    updateConsoleStatus("Computer shoots...");
-    computer.takeTurn(player1, computer.getCoords(player1));
-    displayBoard(player1);
-    turn = player1;
-    gameLoop();
+    setTimeout(() => {
+      updateConsoleStatus("Computer shoots...");
+      computer.takeTurn(player1, computer.getCoords(player1));
+      displayBoard(player1);
+      turn = player1;
+      gameLoop();
+    }, 800);
   }
 }
 

@@ -41,7 +41,13 @@ body {
     font-size: 1.3rem;
   }
 
-  #start-game-btn {
+  #btn-container {
+    display: flex;
+    height: 50px;
+    align-content: center;
+  }
+
+  .console-btn {
     border: none;
     width: 170px;
     font-size: 1.2rem;
