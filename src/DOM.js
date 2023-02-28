@@ -5,6 +5,7 @@ import {
   setupGame,
   setupPlayer,
   placePlayerShip,
+  restartGame,
 } from "../src/main.js";
 
 const body = document.querySelector("body");
@@ -93,7 +94,7 @@ function displayGameOver(winner) {
   restartBtn.id = "restart-btn";
   restartBtn.textContent = "Play again";
   restartBtn.addEventListener("click", () => {
-    // add new restart game function
+    restartGame();
     main.removeChild(gameOverContainer);
   });
   gameOverContainer.appendChild(gameOverText);
